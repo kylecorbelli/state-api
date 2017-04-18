@@ -2,7 +2,7 @@ const models = require('../models');
 
 module.exports = {
   async show(req, res) {
-    const counter = await models.Counter.findById(req.params.id)
+    const counter = await models.counter.findById(req.params.id)
     res.json({
       currentValue: counter.currentValue
     });
@@ -10,7 +10,7 @@ module.exports = {
 
   async update(req, res) {
     try {
-      let counter = await models.Counter.findById(req.params.id)
+      let counter = await models.counter.findById(req.params.id)
       let newValue;
       switch (req.body.action) {
         case 'increment':

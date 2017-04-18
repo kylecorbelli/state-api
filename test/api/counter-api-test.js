@@ -10,12 +10,12 @@ let counterId;
 
 describe('/counters endpoint', () => {
   beforeEach(() => {
-    return models.Counter.destroy({
+    return models.counter.destroy({
       where: {},
       truncate: true
     })
     .then(async () => {
-      const counter = await models.Counter.create({
+      const counter = await models.counter.create({
         currentValue: 0
       });
       counterId = counter.id
