@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var models = require('./models');
 var router = require('./router');
 const cors = require('cors');
+const graphqlHTTP = require('express-graphql');
+const schema = require('./graphql/schema');
 
 var app = express();
 
@@ -22,6 +24,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+
+app.use('/graphql', graphqlHTTP({
+  schema,
+  root: null,
+  graphiql: true
+}));
 
 router(app);
 
