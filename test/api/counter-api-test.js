@@ -79,5 +79,91 @@ describe('/counters endpoint', () => {
           });
         });
     });
-  })
+  });
+
+  describe('grqphql', () => {
+    it('getCounter should return the main counter record', () => {
+      query = `
+        query GetCounter($id: ID!) {
+          getCounter(id: $id) {
+            currentValue
+          }
+        }
+      `;
+      return request(app)
+        .post('/graphql')
+        .send({
+          query,
+          variables: {
+            id: counterId
+          }
+        })
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.deep.equal({
+            data: {
+              getCounter: {
+                currentValue: 0
+              }
+            }
+          });
+        });
+    });
+
+    it('incrementCounter should increment the main counter record', () => {
+      query = `
+        mutation IncrementCounter($id: ID!) {
+          incrementCounter(id: $id) {
+            currentValue
+          }
+        }
+      `;
+      return request(app)
+        .post('/graphql')
+        .send({
+          query,
+          variables: {
+            id: counterId
+          }
+        })
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.deep.equal({
+            data: {
+              incrementCounter: {
+                currentValue: 1
+              }
+            }
+          })
+        });
+    });
+
+    it('decrementCounter should decrement the main counter record', () => {
+      query = `
+        mutation DecrementCounter($id: ID!) {
+          decrementCounter(id: $id) {
+            currentValue
+          }
+        }
+      `;
+      return request(app)
+        .post('/graphql')
+        .send({
+          query,
+          variables: {
+            id: counterId
+          }
+        })
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.deep.equal({
+            data: {
+              decrementCounter: {
+                currentValue: -1
+              }
+            }
+          })
+        });
+    });
+  });
 });
